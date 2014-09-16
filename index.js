@@ -69,7 +69,7 @@ function prepareTask (task) {
 
 function takeScreenshot (task) {
 	var proc = spawn(phantomjs, [
-		path.join(__dirname, 'converter.js'),
+		path.join(__dirname, 'phantom-screenshot.js'),
 		JSON.stringify(task),
 		'--ignore-ssl-errors=true',
 		'--local-to-remote-url-access=true'
