@@ -73,6 +73,7 @@ function takeScreenshot (task) {
 		path.join(__dirname, 'phantom-screenshot.js'),
 		JSON.stringify(task),
 		'--ignore-ssl-errors=true',
+		'--ssl-protocol=any',
 		'--local-to-remote-url-access=true'
 	]);
 
