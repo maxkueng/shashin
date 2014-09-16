@@ -13,6 +13,7 @@ var fileUrl = require('file-url');
 exports = module.exports = rescap;
 
 var defaults = {
+	timeout: 30,
 	https: false,
 	delay: 0,
 	crop: false,

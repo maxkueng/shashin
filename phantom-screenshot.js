@@ -25,6 +25,12 @@ phantom.onError = function (msg, trace) {
 	phantom.exit(1);
 };
 
+page.settings.resourceTimeout = options.timeout || 30000;
+
+page.onResourceTimeout = function(request) {
+	console.error('Resource timeout. Response (#' + request.id + '): ' + JSON.stringify(request));
+};
+
 page.zoomFactor = options.zoomFactor || 1;
 
 // Swallow page errors because we don't care
