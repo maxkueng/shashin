@@ -17,7 +17,7 @@ Either a full URL to the website, just a domain name, or a local file path.
 **resoluton**
 
 A string like "1024x768" that represents the browser window size, or an
-array with 2 entries like `[ 1024, 768 ]`, or an object like 
+array with 2 entries like `[1024,768]`, or an object like 
 `{ width: 1024, height: 768}`.
 
 
