@@ -1,0 +1,19 @@
+{
+  "name": "rescap",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "base64-stream": "^0.1.2",
+    "es5-shim": "^4.0.3",
+    "file-url": "^1.0.0",
+    "object-assign": "^1.0.0",
+    "phantomjs": "^1.9.7-15",
+    "slugify-url": "^1.2.0"
+  }
+}
