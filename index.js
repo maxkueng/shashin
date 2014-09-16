@@ -8,7 +8,6 @@ var url = require('url');
 var phantomjs = require('phantomjs').path;
 var assign = require('object-assign');
 var base64 = require('base64-stream');
-var slugifyUrl = require('slugify-url');
 var fileUrl = require('file-url');
 
 exports = module.exports = rescap;
@@ -40,9 +39,7 @@ function prepareTask (task) {
 		task.uri = url.parse(task.uri).protocol ? task.uri : protocol + task.uri;
 	}
 
-	task = assign(task, 
-		{ slug: slugifyUrl(task.uri) },
-		parseSize(task.resolution));
+	task = assign(task, parseSize(task.resolution));
 
 	if (task.size) {
 		var size = parseSize(task.size);

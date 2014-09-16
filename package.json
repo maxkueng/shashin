@@ -1,19 +1,24 @@
 {
   "name": "rescap",
   "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "description": "Capture screenshots",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/maxkueng/rescap.git"
   },
-  "author": "",
-  "license": "ISC",
+  "main": "index.js",
+  "author": "Max Kueng <me@maxkueng.com> (http://maxkueng.com/)",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/maxkueng/rescap/raw/master/LICENSE"
+    }
+  ],
   "dependencies": {
     "base64-stream": "^0.1.2",
     "es5-shim": "^4.0.3",
     "file-url": "^1.0.0",
     "object-assign": "^1.0.0",
-    "phantomjs": "^1.9.7-15",
-    "slugify-url": "^1.2.0"
+    "phantomjs": "^1.9.7-15"
   }
 }
