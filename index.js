@@ -13,6 +13,7 @@ var fileUrl = require('file-url');
 exports = module.exports = rescap;
 
 var defaults = {
+	phantomTimeout: 300000,
 	timeout: 30,
 	https: false,
 	delay: 0,
@@ -79,8 +80,17 @@ function takeScreenshot (task) {
 
 	var stream = proc.stdout.pipe(base64.decode());
 
+	var killTimer = setTimeout(function () {
+		stream.emit('error', new Error('Process timed out'));
+		proc.kill();
+	}, options.phantomTimeout);
+
 	proc.stderr.on('data', function (data) {
 		stream.emit('error', new Error(data));
+	});
+
+	proc.on('exit', function (code) {
+		clearTimeout(killTimer);
 	});
 
 	return stream;
