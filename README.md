@@ -1,5 +1,5 @@
-sukurin
-=======
+![sukurin](./artwork/logo.png)
+==============================
 
 sukurin takes screenshots of websites in any resolution using PhantomJS.
 It is heavily inspired by
