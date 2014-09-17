@@ -83,7 +83,7 @@ function takeScreenshot (task) {
 	var killTimer = setTimeout(function () {
 		stream.emit('error', new Error('Process timed out'));
 		proc.kill();
-	}, options.phantomTimeout);
+	}, task.phantomTimeout);
 
 	proc.stderr.on('data', function (data) {
 		stream.emit('error', new Error(data));
