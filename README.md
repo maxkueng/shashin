@@ -1,14 +1,14 @@
-rescap
-======
+sukurin
+=======
 
-rescap takes screenshots of websites in any resolution using PhantomJS.
+sukurin takes screenshots of websites in any resolution using PhantomJS.
 It is heavily inspired by
 [pageres](https://github.com/sindresorhus/pageres) but tries to be
 simpler.
 
 # API
 
-### info = rescap(url, resolution, options)
+### info = sukurin(url, resolution, options)
 
 **url**
 
@@ -34,9 +34,9 @@ array with 2 entries like `[1024,768]`, or an object like
 
 ```javascript
 var fs = require('fs');
-var rescap = require('rescap');
+var sukurin = require('sukurin');
 
-var info = rescap('google.com', '1024x768', { delay: 1, crop: true });
+var info = sukurin('google.com', '1024x768', { delay: 1, crop: true });
 var file = fs.createWriteStream('screenshot.png');
 info.stream.pipe(file);
 ```
