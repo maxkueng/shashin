@@ -9,6 +9,7 @@ var phantomjs = require('phantomjs').path;
 var assign = require('object-assign');
 var base64 = require('base64-stream');
 var fileUrl = require('file-url');
+var viewports = require('viewportsizes');
 
 exports = module.exports = rescap;
 
@@ -97,8 +98,13 @@ function takeScreenshot (task) {
 }
 
 function parseSize (size) {
-	if (typeof size === 'string' && /^\d+x\d+$/i.test(size)) {
-		var size = size.split(/x/i);
+	if (typeof size === 'string') {
+		if (/^\d+x\d+$/i.test(size)) {
+			size = size.split(/x/i);
+		} else {
+			var vp = viewports.get(size);
+			size = vp.size || null;
+		}
 	}
 
 	if (Array.isArray(size) && size.length === 2) {

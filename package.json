@@ -19,6 +19,7 @@
     "es5-shim": "^4.0.3",
     "file-url": "^1.0.0",
     "object-assign": "^1.0.0",
-    "phantomjs": "^1.9.7-15"
+    "phantomjs": "^1.9.7-15",
+    "viewportsizes": "0.0.1"
   }
 }
