@@ -12,6 +12,11 @@ console.log = console.error = function () {
 	system.stderr.writeLine([].slice.call(arguments).join(' '));
 }
 
+function fail (msg) {
+	console.error(msg);
+	return phantom.exit(1);
+}
+
 phantom.onError = function (msg, trace) {
 	var msgStack = ['PHANTOM ERROR: ' + msg];
 	if (trace && trace.length) {
@@ -21,20 +26,17 @@ phantom.onError = function (msg, trace) {
 		});
 	}
 
-	console.error(msgStack.join('\n'));
-	phantom.exit(1);
-};
-
-page.settings.resourceTimeout = options.timeout * 1000 || 30000;
-
-page.onResourceTimeout = function(request) {
-	console.error('Resource timeout. Response (#' + request.id + '): ' + JSON.stringify(request));
+	fail(msgStack.join('\n'));
 };
 
 page.zoomFactor = options.zoomFactor || 1;
 
 // Swallow page errors because we don't care
 page.onError = function () {};
+
+var requestTimeout = setTimeout(function () {
+	fail('Request timeout.');
+}, options.timeout * 1000);
 
 page.onResourceReceived = function () {
 	page.injectJs('./node_modules/es5-shim/es5-shim.js');
@@ -55,15 +57,24 @@ if (options.crop) {
 }
 
 page.open(options.uri, function (status) {
+	clearTimeout(requestTimeout);
+
 	if (status === 'fail') {
-		console.error('Couldn\'t load url ' + options.uri);
-		phantom.exit(1);
+		return fail('Couldn\'t load url ' + options.uri);
 	}
 
 	if (options.selector) {
-		page.clipRect = page.evaluate(function (selector) {
-			return document.querySelector(selector).getBoundingClientRect();
+		var clipRect = page.evaluate(function (selector) {
+			var el = document.querySelector(selector);
+			return (el) ? el.getBoundingClientRect() : null;
+
 		}, options.selector);
+
+		if (!clipRect) {
+			return fail('Couldn\'t find element by selector');
+		}
+
+		page.clipRect = clipRect;
 	}
 
 	page.evaluate(function () {
