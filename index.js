@@ -33,63 +33,6 @@ function shashin (uri, resolution, options, callback) {
 	return assign(task, { stream: takeScreenshot(task) });
 }
 
-function prepareTask (task) {
-	var isFile = fs.existsSync(task.uri);
-	var protocol = task.https ? 'https://' : 'http://';
-
-	if (isFile) {
-		task.uri = fileUrl(task.uri);
-	} else {
-		task.uri = (!task.uri) ? '' : url.parse(task.uri).protocol ? task.uri : protocol + task.uri;
-	}
-
-	task = assign(task, parseSize(task.resolution));
-
-	if (task.size) {
-		var size = parseSize(task.size);
-		var resolution = parseSize(task.resolution);
-		var aspect = resolution.width / resolution.height;
-		var newWidth, newHeight;
-
-		if (aspect > 1) {
-			newWidth = size.width;
-			newHeight = resolution.height / aspect;
-		} else {
-			newWidth = resolution.width * aspect;
-			newHeight = size.height;
-		}
-
-		task = assign(task, {
-			width: newWidth,
-			height: newHeight,
-			zoomFactor: newWidth / resolution.width
-		});
-	}
-
-	return task;
-}
-
-function validateTask (task) {
-	console.log(task);
-	var uriParts = url.parse(task.uri);
-
-	if (!uriParts.protocol || !uriParts.host) {
-		return new Error('Invalid argument: Missing or invalid URL.');
-	}
-
-	if (!task.width || !task.height) {
-		return new Error('Invalid argument: Missing or invalid resoultion.');
-	}
-
-	if (task.timeout > task.phantomTimeout) {
-		return new Error('Invalid options: phantomTimeout must be greater than timeout.');
-	}
-
-	if (task.delay > task.timeout) {
-		return new Error('Invalid options: timeout must be greater than delay.');
-	}
-}
-
 function takeScreenshot (task) {
 	var stream = new Base64Decode();
 	var err = validateTask(task);
@@ -129,6 +72,62 @@ function takeScreenshot (task) {
 	}
 
 	return stream;
+}
+
+function prepareTask (task) {
+	var isFile = fs.existsSync(task.uri);
+	var protocol = task.https ? 'https://' : 'http://';
+
+	if (isFile) {
+		task.uri = fileUrl(task.uri);
+	} else {
+		task.uri = (!task.uri) ? '' : url.parse(task.uri).protocol ? task.uri : protocol + task.uri;
+	}
+
+	task = assign(task, parseSize(task.resolution));
+
+	if (task.size) {
+		var size = parseSize(task.size);
+		var resolution = parseSize(task.resolution);
+		var aspect = resolution.width / resolution.height;
+		var newWidth, newHeight;
+
+		if (aspect > 1) {
+			newWidth = size.width;
+			newHeight = resolution.height / aspect;
+		} else {
+			newWidth = resolution.width * aspect;
+			newHeight = size.height;
+		}
+
+		task = assign(task, {
+			width: newWidth,
+			height: newHeight,
+			zoomFactor: newWidth / resolution.width
+		});
+	}
+
+	return task;
+}
+
+function validateTask (task) {
+	var uriParts = url.parse(task.uri);
+
+	if (!uriParts.protocol || !uriParts.host) {
+		return new Error('Invalid argument: Missing or invalid URL.');
+	}
+
+	if (!task.width || !task.height) {
+		return new Error('Invalid argument: Missing or invalid resoultion.');
+	}
+
+	if (task.timeout > task.phantomTimeout) {
+		return new Error('Invalid options: phantomTimeout must be greater than timeout.');
+	}
+
+	if (task.delay > task.timeout) {
+		return new Error('Invalid options: timeout must be greater than delay.');
+	}
 }
 
 function parseSize (size) {
