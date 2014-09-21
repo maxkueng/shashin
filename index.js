@@ -5,9 +5,9 @@ var path = require('path');
 var spawn = require('child_process').spawn;
 var url = require('url');
 
-var assign = require('object-assign');
 var Base64Decode = require('base64-stream').Decode;
 var fileUrl = require('file-url');
+var merge = require('merge');
 var phantomjs = require('phantomjs').path;
 var viewports = require('viewportsizes');
 
@@ -24,13 +24,13 @@ var defaults = {
 };
 
 function shashin (uri, resolution, options, callback) {
-	var task = prepareTask(assign(
+	var task = prepareTask(merge(true,
 		defaults,
 		{ uri: uri, resolution: resolution },
 		options
 	));
 
-	return assign(task, { stream: takeScreenshot(task) });
+	return merge(task, { stream: takeScreenshot(task) });
 }
 
 function takeScreenshot (task) {
@@ -84,7 +84,7 @@ function prepareTask (task) {
 		task.uri = (!task.uri) ? '' : url.parse(task.uri).protocol ? task.uri : protocol + task.uri;
 	}
 
-	task = assign(task, parseSize(task.resolution));
+	task = merge(task, parseSize(task.resolution));
 
 	if (task.size) {
 		var size = parseSize(task.size);
@@ -100,7 +100,7 @@ function prepareTask (task) {
 			newHeight = size.height;
 		}
 
-		task = assign(task, {
+		task = merge(task, {
 			width: newWidth,
 			height: newHeight,
 			zoomFactor: newWidth / resolution.width
