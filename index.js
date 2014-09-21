@@ -11,7 +11,7 @@ var fileUrl = require('file-url');
 var phantomjs = require('phantomjs').path;
 var viewports = require('viewportsizes');
 
-exports = module.exports = rescap;
+exports = module.exports = shashin;
 
 var defaults = {
 	phantomTimeout: 300,
@@ -23,7 +23,7 @@ var defaults = {
 	zoomFactor: 1
 };
 
-function rescap (uri, resolution, options, callback) {
+function shashin (uri, resolution, options, callback) {
 	var task = prepareTask(assign(
 		defaults,
 		{ uri: uri, resolution: resolution },
