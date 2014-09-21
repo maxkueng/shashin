@@ -97,6 +97,7 @@ function takeScreenshot (task) {
 	if (err) {
 		process.nextTick(function () {
 			stream.emit('error', err);
+			stream.end();
 		});
 
 	} else {
@@ -113,11 +114,13 @@ function takeScreenshot (task) {
 
 		var killTimer = setTimeout(function () {
 			stream.emit('error', new Error('Process timed out'));
+			stream.end();
 			proc.kill();
 		}, task.phantomTimeout * 1000);
 
 		proc.stderr.on('data', function (data) {
 			stream.emit('error', new Error(data.toString('utf8').trim()));
+			stream.end();
 		});
 
 		proc.on('exit', function (code) {
