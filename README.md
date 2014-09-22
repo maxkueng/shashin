@@ -1,10 +1,12 @@
 ![shashin](./artwork/logo.png)
 ==============================
 
-shashin takes screenshots of websites in any resolution using PhantomJS.
-It is heavily inspired by
-[pageres](https://github.com/sindresorhus/pageres) but tries to be
-simpler.
+[![Build Status](https://secure.travis-ci.org/maxkueng/shashin.png?branch=master)](http://travis-ci.org/maxkueng/shashin)
+
+*shashin (japanese: photograph)* takes beautiful photos of websites in any
+resolution using PhantomJS.  
+It is heavily inspired by [pageres](https://github.com/sindresorhus/pageres) but
+shashin has a much simpler API.
 
 # API
 
