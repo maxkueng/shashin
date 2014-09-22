@@ -8,6 +8,7 @@ var url = require('url');
 var Base64Decode = require('base64-stream').Decode;
 var fileUrl = require('file-url');
 var merge = require('merge');
+var objectHash = require('object-hash');
 var phantomjs = require('phantomjs').path;
 var viewports = require('viewportsizes');
 
@@ -30,7 +31,24 @@ function shashin (uri, resolution, options, callback) {
 		options
 	));
 
-	return merge(task, { stream: takeScreenshot(task) });
+	return merge(info(task), { stream: takeScreenshot(task) });
+}
+
+function info (task) {
+	console.log(task);
+	var info = {
+		hash: objectHash(task),
+		url: task.uri,
+		width: task.width,
+		height: task.height,
+		crop: task.crop,
+		delay: task.delay,
+		selector: task.selector,
+		zoomFactor: task.zoomFactor
+	};
+	console.log(info);
+
+	return info;
 }
 
 function takeScreenshot (task) {

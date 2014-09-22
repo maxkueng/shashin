@@ -4,6 +4,7 @@ var fs = require('fs');
 var path = require('path');
 var imageSize = require('image-size');
 var wrappy = require('wrappy');
+var ReadableStream = require('stream').Readable;
 
 var once = wrappy(function (callback) {
 	var called = false
@@ -260,5 +261,22 @@ test('GENERAL', function (t) {
 		
 		tt.equal(info.width, 400, 'width ok');
 		tt.equal(info.height, 300, 'height ok');
+	});
+
+
+	t.test('return value', function (tt) {
+		tt.plan(9);
+
+		var info = shashin('victorjs.org', 'nexus 5', { delay: 2, crop: true });
+		
+		tt.ok(info.hash, 'hash ok');
+		tt.equal(info.url, 'http://victorjs.org', 'url ok');
+		tt.equal(info.width, 360, 'width ok');
+		tt.equal(info.height, 598, 'height ok');
+		tt.equal(info.crop, true, 'crop ok');
+		tt.equal(info.delay, 2, 'delay ok');
+		tt.equal(info.selector, null, 'selector ok');
+		tt.equal(info.zoomFactor, 1, 'zoomFactor ok');
+		tt.ok(info.stream instanceof ReadableStream, 'stream ok');
 	});
 });

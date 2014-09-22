@@ -24,7 +24,6 @@ exports = module.exports = function (port, timeout) {
 		}, 100);
 
 		setTimeout(function () {
-			console.log('END');
 			clearInterval(interval);
 			res.end('\n');
 		}, lag * 1000);
@@ -49,7 +48,6 @@ exports = module.exports = function (port, timeout) {
 
 	server.close = function () {
 		try {
-			console.log('SHIIT');
 			close.call(server);
 		} catch (e) {
 		}
