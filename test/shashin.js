@@ -224,3 +224,41 @@ test('OPTIONS', function (t) {
 	});
 
 });
+
+test('GENERAL', function (t) {
+	t.test('resolution: accept device names from viewportsizes.com', function (tt) {
+		tt.plan(2);
+
+		var info = shashin('httpbin.org/html', 'nexus 5');
+		
+		tt.equal(info.width, 360, 'width ok');
+		tt.equal(info.height, 598, 'height ok');
+	});
+
+	t.test('resolution: string', function (tt) {
+		tt.plan(2);
+
+		var info = shashin('httpbin.org/html', '1024x768');
+		
+		tt.equal(info.width, 1024, 'width ok');
+		tt.equal(info.height, 768, 'height ok');
+	});
+
+	t.test('resolution: object', function (tt) {
+		tt.plan(2);
+
+		var info = shashin('httpbin.org/html', { width: 1337, height: 4242 });
+		
+		tt.equal(info.width, 1337, 'width ok');
+		tt.equal(info.height, 4242, 'height ok');
+	});
+
+	t.test('resolution: array', function (tt) {
+		tt.plan(2);
+
+		var info = shashin('httpbin.org/html', [ 400, 300 ]);
+		
+		tt.equal(info.width, 400, 'width ok');
+		tt.equal(info.height, 300, 'height ok');
+	});
+});
