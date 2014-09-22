@@ -87,7 +87,6 @@ test('OPTIONS', function (t) {
 
 			tt.ok(err instanceof Error, 'emits error');
 			tt.equal(timeElapsed, 2, 'timeout is correct');
-			tt.end();
 		}));
 
 	});
@@ -107,7 +106,6 @@ test('OPTIONS', function (t) {
 			s.close();
 
 			tt.ok(timeElapsed >= delay, 'delay is correct');
-			tt.end();
 		});
 	});
 
@@ -197,9 +195,32 @@ test('OPTIONS', function (t) {
 			s.close();
 
 			tt.ok(err instanceof Error, 'emits error');
-			tt.end();
 		}));
 
+	});
+
+	t.test('basic auth: should log in', function (tt) {
+		tt.plan(1);
+
+		var info = shashin('httpbin.org/basic-auth/hansel/gretel', '1024x768', { username: 'hansel', password: 'gretel' });
+
+		info.stream.on('error', once(function (err) {
+			tt.fail();
+		}));
+
+		info.stream.on('finish', function () {
+			tt.ok(true);
+		});
+	});
+
+	t.test('basic auth: should send an error with false credentials', function (tt) {
+		tt.plan(1);
+
+		var info = shashin('httpbin.org/basic-auth/hansel/gretel', '1024x768', { username: 'hansel', password: 'wrong' });
+
+		info.stream.on('error', once(function (err) {
+			tt.ok(err instanceof Error, 'emits error');
+		}));
 	});
 
 });

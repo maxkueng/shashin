@@ -29,6 +29,10 @@ phantom.onError = function (msg, trace) {
 	fail(msgStack.join('\n'));
 };
 
+if (options.username && options.password) {
+	page.customHeaders = { Authorization: 'Basic ' + btoa(options.username + ':' + options.password) };
+}
+
 page.zoomFactor = options.zoomFactor || 1;
 
 // Swallow page errors because we don't care
