@@ -23,7 +23,7 @@
     "file-url": "^1.0.0",
     "merge": "^1.2.0",
     "phantomjs": "^1.9.7-15",
-    "viewportsizes": "0.0.1"
+    "viewportsizes": "0.0.2"
   },
   "devDependencies": {
     "express": "^4.9.4",

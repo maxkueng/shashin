@@ -141,7 +141,7 @@ function parseSize (size) {
 	}
 
 	if (size && Array.isArray(size) && size.length === 2) {
-		return { width: size[0], height: size[1] };
+		return { width: parseInt(size[0], 10), height: parseInt(size[1], 10) };
 	}
 
 	if (size && typeof size === 'object' && size.hasOwnProperty('width') && size.hasOwnProperty('height')) {
