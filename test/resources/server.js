@@ -45,12 +45,19 @@ exports = module.exports = function (port, timeout) {
 	var server = http.createServer(app);
 	server.listen(port);
 
+	var close = server.close;
+
+	server.close = function () {
+		try {
+			console.log('SHIIT');
+			close.call(server);
+		} catch (e) {
+		}
+	};
+
 	if (timeout) {
 		setTimeout(function () {
-			try {
-				server.close();
-			} catch (e) {
-			}
+			server.close();
 		}, timeout * 1000);
 	}
 
