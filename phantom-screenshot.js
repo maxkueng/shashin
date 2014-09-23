@@ -1,7 +1,6 @@
 "use strict";
 
 var webpage = require('webpage');
-var page = webpage.create();
 var system = require('system');
 var options = JSON.parse(phantom.args[0]);
 
@@ -29,68 +28,90 @@ phantom.onError = function (msg, trace) {
 	fail(msgStack.join('\n'));
 };
 
-if (options.username && options.password) {
-	page.customHeaders = { Authorization: 'Basic ' + btoa(options.username + ':' + options.password) };
-}
+renderPage(options);
 
-page.zoomFactor = options.zoomFactor || 1;
+function renderPage (options) {
+	var page = webpage.create();
 
-// Swallow page errors because we don't care
-page.onError = function () {};
+	var redirectURL = null;
 
-var requestTimeout = setTimeout(function () {
-	fail('Request timeout.');
-}, options.timeout * 1000);
+	var requestTimeout = setTimeout(function () {
+		fail('Request timeout.');
+	}, options.timeout * 1000);
 
-page.onResourceReceived = function () {
-	page.injectJs('./node_modules/es5-shim/es5-shim.js');
-};
+	page.zoomFactor = options.zoomFactor || 1;
 
-page.viewportSize = {
-	width: options.width,
-	height: options.height
-};
+	if (options.username && options.password) {
+		page.customHeaders = { Authorization: 'Basic ' + btoa(options.username + ':' + options.password) };
+	}
 
-if (options.crop) {
-	page.clipRect = {
-		top: 0,
-		left: 0,
+	page.viewportSize = {
 		width: options.width,
 		height: options.height
 	};
-}
 
-page.open(options.uri, function (status) {
-	clearTimeout(requestTimeout);
-
-	if (status === 'fail') {
-		return fail('Couldn\'t load url ' + options.uri);
+	if (options.crop) {
+		page.clipRect = {
+			top: 0,
+			left: 0,
+			width: options.width,
+			height: options.height
+		};
 	}
 
-	if (options.selector) {
-		var clipRect = page.evaluate(function (selector) {
-			var el = document.querySelector(selector);
-			return (el) ? el.getBoundingClientRect() : null;
+	// Swallow page errors because we don't care
+	page.onError = function () {};
 
-		}, options.selector);
+	page.onResourceReceived = function (resource) {
+		var sameURL = (options.uri === resource.url);
+		var isRedirect = (String(resource.status)[0] === '3' && resource.redirectURL);
 
-		if (!clipRect) {
-			return fail('Couldn\'t find element by selector');
+		if (sameURL && isRedirect) {
+			redirectURL = resource.redirectURL;
+			return;
 		}
 
-		page.clipRect = clipRect;
-	}
+		page.injectJs('./node_modules/es5-shim/es5-shim.js');
+	};
 
-	page.evaluate(function () {
-		var background = window.getComputedStyle(document.body).getPropertyValue('background-color');
-		if (!background || background === 'rgba(0, 0, 0, 0)') {
-			document.body.style.backgroundColor = 'white';
+	page.open(options.uri, function (status) {
+		clearTimeout(requestTimeout);
+
+		if (redirectURL) {
+			options.uri = redirectURL;
+			return renderPage(options);
 		}
+
+		if (status !== 'success') {
+			return fail('Couldn\'t load url ' + options.uri);
+		}
+
+		if (options.selector) {
+			var clipRect = page.evaluate(function (selector) {
+				var el = document.querySelector(selector);
+				return (el) ? el.getBoundingClientRect() : null;
+
+			}, options.selector);
+
+			if (!clipRect) {
+				return fail('Couldn\'t find element by selector');
+			}
+
+			page.clipRect = clipRect;
+		}
+
+		page.evaluate(function () {
+			var background = window.getComputedStyle(document.body).getPropertyValue('background-color');
+			if (!background || background === 'rgba(0, 0, 0, 0)') {
+				document.body.style.backgroundColor = 'white';
+			}
+		});
+
+		window.setTimeout(function () {
+			log.call(console, page.renderBase64('png'));
+			phantom.exit(0);
+		}, options.delay * 1000);
+
 	});
 
-	window.setTimeout(function () {
-		log.call(console, page.renderBase64('png'));
-		phantom.exit(0);
-	}, options.delay * 1000);
-
-});
+}

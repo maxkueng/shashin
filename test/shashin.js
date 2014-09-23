@@ -270,7 +270,7 @@ test('GENERAL', function (t) {
 		var info = shashin('victorjs.org', 'nexus 5', { delay: 2, crop: true });
 		
 		tt.ok(info.hash, 'hash ok');
-		tt.equal(info.url, 'http://victorjs.org', 'url ok');
+		tt.equal(info.url, 'http://victorjs.org/', 'url ok');
 		tt.equal(info.width, 360, 'width ok');
 		tt.equal(info.height, 598, 'height ok');
 		tt.equal(info.crop, true, 'crop ok');
@@ -278,5 +278,28 @@ test('GENERAL', function (t) {
 		tt.equal(info.selector, null, 'selector ok');
 		tt.equal(info.zoomFactor, 1, 'zoomFactor ok');
 		tt.ok(info.stream instanceof ReadableStream, 'stream ok');
+	});
+
+	t.test('redirects: should follow redirects', function (tt) {
+		var info = shashin('http://httpbin.org/relative-redirect/6', 'nexus 5');
+
+		var filePath = info.hash + '.png'
+
+		var file = fs.createWriteStream(filePath);
+
+		info.stream.on('error', once(function (err) {
+			tt.fail();
+		}));
+
+		info.stream.on('finish', function () {
+			tt.end();
+		});
+
+		file.on('finish', function () {
+			fs.unlinkSync(filePath);
+		});
+
+		info.stream.pipe(file);
+
 	});
 });
