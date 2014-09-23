@@ -302,4 +302,28 @@ test('GENERAL', function (t) {
 		info.stream.pipe(file);
 
 	});
+
+	t.test('local file: should render a local HTML file', function (tt) {
+		var info = shashin('resources/test.html', 'nexus 5');
+
+		var filePath = info.hash + '.png'
+
+		var file = fs.createWriteStream(filePath);
+
+		info.stream.on('error', once(function (err) {
+			tt.fail();
+		}));
+
+		info.stream.on('finish', function () {
+			tt.end();
+		});
+
+		file.on('finish', function () {
+			fs.unlinkSync(filePath);
+		});
+
+		info.stream.pipe(file);
+
+	});
+
 });

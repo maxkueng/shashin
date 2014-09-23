@@ -95,6 +95,7 @@ function prepareTask (task) {
 
 	if (isFile) {
 		task.uri = fileUrl(task.uri);
+		console.log('FILE', task.uri);
 	} else {
 		task.uri = (!task.uri) ? '' : url.parse(task.uri).protocol ? task.uri : protocol + task.uri;
 		var uriParts = url.parse(task.uri);
@@ -130,7 +131,7 @@ function prepareTask (task) {
 function validateTask (task) {
 	var uriParts = url.parse(task.uri);
 
-	if (!uriParts.protocol || !uriParts.host) {
+	if (uriParts.protocol !== 'file:' && (!uriParts.protocol || !uriParts.host)) {
 		return new Error('Invalid argument: Missing or invalid URL.');
 	}
 
