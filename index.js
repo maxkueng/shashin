@@ -35,7 +35,6 @@ function shashin (uri, resolution, options, callback) {
 }
 
 function info (task) {
-	console.log(task);
 	var info = {
 		hash: objectHash(task),
 		url: task.uri,
@@ -46,7 +45,6 @@ function info (task) {
 		selector: task.selector,
 		zoomFactor: task.zoomFactor
 	};
-	console.log(info);
 
 	return info;
 }
@@ -62,7 +60,6 @@ function takeScreenshot (task) {
 		});
 
 	} else {
-
 		var proc = spawn(phantomjs, [
 			path.join(__dirname, 'phantom-screenshot.js'),
 			JSON.stringify(task),
@@ -100,6 +97,8 @@ function prepareTask (task) {
 		task.uri = fileUrl(task.uri);
 	} else {
 		task.uri = (!task.uri) ? '' : url.parse(task.uri).protocol ? task.uri : protocol + task.uri;
+		var uriParts = url.parse(task.uri);
+		task.uri = url.format(uriParts);
 	}
 
 	task = merge(task, parseSize(task.resolution));
