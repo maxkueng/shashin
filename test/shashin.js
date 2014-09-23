@@ -304,7 +304,7 @@ test('GENERAL', function (t) {
 	});
 
 	t.test('local file: should render a local HTML file', function (tt) {
-		var info = shashin('resources/test.html', 'nexus 5');
+		var info = shashin('test/resources/test.html', 'nexus 5');
 
 		var filePath = info.hash + '.png'
 

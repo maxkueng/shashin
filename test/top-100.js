@@ -58,9 +58,9 @@ function takeScreenshot (domain, next) {
 				t.ok(stat.size > 0, 'file as expected');
 			} else {
 				t.equal(stat.size, 0, 'file as expected', error);
-				fs.unlinkSync(filePath);
 			}
 
+			fs.unlinkSync(filePath);
 
 			t.end();
 			next();

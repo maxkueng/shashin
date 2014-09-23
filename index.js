@@ -95,7 +95,6 @@ function prepareTask (task) {
 
 	if (isFile) {
 		task.uri = fileUrl(task.uri);
-		console.log('FILE', task.uri);
 	} else {
 		task.uri = (!task.uri) ? '' : url.parse(task.uri).protocol ? task.uri : protocol + task.uri;
 		var uriParts = url.parse(task.uri);
