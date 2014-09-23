@@ -1,6 +1,6 @@
 {
   "name": "shashin",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Capture responsive screenshots using PhantomJS",
   "repository": {
     "type": "git",
