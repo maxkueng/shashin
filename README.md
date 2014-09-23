@@ -8,6 +8,23 @@ resolution using PhantomJS.
 It is heavily inspired by [pageres](https://github.com/sindresorhus/pageres) but
 shashin has a much simpler API.
 
+### Features
+
+ - Tested against [Wikipedia's list of 100 most popular websites](https://en.wikipedia.org/wiki/List_of_most_popular_websites) (minus NSFW). 
+   It can't capture all of them (timeouts and such) but it won't crash or throw.
+ - Capture local files
+ - Responsive screenshots
+ - Page zoom
+ - Kills hanging PhantomJS processes
+ - Follows HTTP 3xx redirects
+ - Stream interface
+ - Request and process timeouts
+ - Full-page or cropped screenshots
+ - Delayed captures
+ - Capture a single element instead of the whole page
+ - HTTP basic authentication
+
+
 ## Install
 
 ```bash
@@ -16,7 +33,7 @@ npm install shashin --save
 
 ## API
 
-## Sample usage
+### Sample usage
 
 ```javascript
 var fs = require('fs');
