@@ -103,27 +103,6 @@ function prepareTask (task) {
 
 	task = merge(task, parseSize(task.resolution));
 
-	if (task.size) {
-		var size = parseSize(task.size);
-		var resolution = parseSize(task.resolution);
-		var aspect = resolution.width / resolution.height;
-		var newWidth, newHeight;
-
-		if (aspect > 1) {
-			newWidth = size.width;
-			newHeight = resolution.height / aspect;
-		} else {
-			newWidth = resolution.width * aspect;
-			newHeight = size.height;
-		}
-
-		task = merge(task, {
-			width: newWidth,
-			height: newHeight,
-			zoomFactor: newWidth / resolution.width
-		});
-	}
-
 	return task;
 }
 
