@@ -236,6 +236,15 @@ test('GENERAL', function (t) {
 		tt.equal(info.height, 598, 'height ok');
 	});
 
+	t.test('resolution: accept device name with orientation', function (tt) {
+		tt.plan(2);
+
+		var info = shashin('httpbin.org/html', 'nexus 5@landscape');
+		
+		tt.equal(info.width, 598, 'width ok');
+		tt.equal(info.height, 360, 'height ok');
+	});
+
 	t.test('resolution: string', function (tt) {
 		tt.plan(2);
 
