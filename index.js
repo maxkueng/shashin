@@ -131,7 +131,7 @@ function parseSize (size) {
 		if (/^\d+x\d+$/i.test(size)) {
 			size = size.split(/x/i);
 		} else {
-			var vp = viewports.get(size);
+			var vp = viewports.get(size.toLowerCase());
 			size = (vp) ? vp.size || null : null;
 		}
 	}
